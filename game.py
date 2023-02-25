@@ -17,9 +17,13 @@ class Game:
 
             self.field[el_ind][line] = -1
 
+
+
+
+
     def click(self, square_index):
         if self.field[square_index] == -1:
             self.game_over = True
-            print("Game over!")
+            print("Game Over!")
         elif self.field[square_index] == 0:
             self.field[square_index] = 1
