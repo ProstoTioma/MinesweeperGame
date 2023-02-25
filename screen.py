@@ -15,9 +15,11 @@ class Screen:
     def draw(self):
         end = False
         self.screen.fill(self.bg)
-        self.draw_field(self.game.field)
 
         while not end:
+            self.sprites = []
+            self.draw_field(self.game.field)
+
             for event in pygame.event.get():
                 # Click
                 if event.type == pygame.MOUSEBUTTONUP:
@@ -25,8 +27,8 @@ class Screen:
                     clicked_sprites = [s for s in self.sprites if s.collidepoint(pos)]
                     print(clicked_sprites[0][0] // clicked_sprites[0][2],
                           clicked_sprites[0][1] // clicked_sprites[0][3])
-                    self.game.click((clicked_sprites[0][0] // clicked_sprites[0][2],
-                                     clicked_sprites[0][1] // clicked_sprites[0][3]))
+                    self.game.click((clicked_sprites[0][1] // clicked_sprites[0][3],
+                                     clicked_sprites[0][0] // clicked_sprites[0][2]))
                     print(self.game.field)
                 if event.type == pygame.QUIT:
                     end = True
@@ -41,7 +43,14 @@ class Screen:
                 rect = pygame.Rect(countSquare * self.screen_width // len(raw), countRaw * self.screen_height // len(
                     field), self.screen_width // len(raw), self.screen_height // len(field))
                 self.sprites += [rect]
-                pygame.draw.rect(self.screen, (162, 209, 73), rect, 0)
+                if square == -1:
+                    colour = (200, 0, 0)
+                elif square == 1:
+                    colour = (0, 0, 200)
+
+                else:
+                    colour = (162, 209, 73)
+                pygame.draw.rect(self.screen, colour, rect, 0)
                 pygame.draw.rect(self.screen, (0, 0, 0), rect, 1)
 
                 countSquare += 1
