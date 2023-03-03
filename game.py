@@ -17,13 +17,15 @@ class Game:
 
             self.field[el_ind][line] = -1
 
+    def click(self, button, square_index):
+        if button == 1:
+            if self.field[square_index] == -1:
+                self.game_over = True
+                print("Game Over!")
+            elif self.field[square_index] == 0:
+                self.field[square_index] = 1
 
-
-
-
-    def click(self, square_index):
-        if self.field[square_index] == -1:
-            self.game_over = True
-            print("Game Over!")
-        elif self.field[square_index] == 0:
-            self.field[square_index] = 1
+    def neighbors(self, a, radius, row_number, column_number):
+        return [[a[i][j] if 0 <= i < len(a) and 0 <= j < len(a[0]) else 0
+                 for j in range(column_number - 1 - radius, column_number + radius)]
+                for i in range(row_number - 1 - radius, row_number + radius)]

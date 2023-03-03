@@ -27,7 +27,7 @@ class Screen:
                     clicked_sprites = [s for s in self.sprites if s.collidepoint(pos)]
                     print(clicked_sprites[0][0] // clicked_sprites[0][2],
                           clicked_sprites[0][1] // clicked_sprites[0][3])
-                    self.game.click((clicked_sprites[0][1] // clicked_sprites[0][3],
+                    self.game.click(event.button, (clicked_sprites[0][1] // clicked_sprites[0][3],
                                      clicked_sprites[0][0] // clicked_sprites[0][2]))
                     print(self.game.field)
                 if event.type == pygame.QUIT:
