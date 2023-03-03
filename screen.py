@@ -47,6 +47,8 @@ class Screen:
                     colour = (200, 0, 0)
                 elif square == 1:
                     colour = (0, 0, 200)
+                elif square == 2:
+                    colour = (126, 132, 247)
 
                 else:
                     colour = (162, 209, 73)

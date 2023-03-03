@@ -5,7 +5,7 @@ import numpy as np
 
 class Game:
     def __init__(self):
-        # 0 closed square w/o mine, 1 opened square w/o mine, -1 mine, 2 flag
+        # 0 closed square w/o mine, 1 opened square w/o mine, -1 mine opened, -2 mine closed, 2 flag
         self.game_over = False
         self.field = np.zeros([6, 6])
         self.generate_mines(10)
