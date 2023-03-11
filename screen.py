@@ -13,14 +13,8 @@ class Screen:
         self.game = Game()
         self.sprites = []
         self.flag_image = pygame.image.load(
-            r"C:\Users\artio\PycharmProjects\pythonLessons\src\MinesweeperGame\sprites\flag_icon.png")
+            r"sprites/flag_icon.png")
         self.flag_rect = self.flag_image.get_rect()
-
-        # # Plot Numbers
-        # font = pygame.font.SysFont('arial', 150)
-        # text = font.render(str(self.game.neighbors_count), True, (0, 0, 0))
-        # self.screen.blit(text, rect)
-        # pygame.display.update()
 
     def draw(self):
         end = False
@@ -42,7 +36,7 @@ class Screen:
 
                     self.game.click(event.button, (clicked_sprites[0][1] // clicked_sprites[0][3],
                                                    clicked_sprites[0][0] // clicked_sprites[0][2]))
-                    print(self.game.field)
+
                 if event.type == pygame.QUIT:
                     end = True
             pygame.display.update()
@@ -56,24 +50,35 @@ class Screen:
                 rect = pygame.Rect(countSquare * self.screen_width // len(raw), countRaw * self.screen_height // len(
                     field), self.screen_width // len(raw), self.screen_height // len(field))
                 self.sprites += [rect]
-                if square == -1:
+                if square.number == -1:
                     colour = (200, 0, 0)
                     pygame.draw.rect(self.screen, colour, rect, 0)
                     pygame.draw.rect(self.screen, (0, 0, 0), rect, 1)
 
-                elif square == 1:
+                elif square.number == -4:
                     colour = (126, 132, 247)
                     pygame.draw.rect(self.screen, colour, rect, 0)
                     pygame.draw.rect(self.screen, (0, 0, 0), rect, 1)
 
+                    # Plot Numbers
+                    if square.neighbours_count > 0:
+                        rect.x += 50
+                        font = pygame.font.SysFont('arial', 120)
+                        text = font.render(str(square.neighbours_count), True, (162, 209, 73))
+                        self.screen.blit(text, rect)
+                        pygame.display.update()
 
-                elif square == 2:
+
+                elif square.number == -5:
                     colour = (162, 209, 73)
                     pygame.draw.rect(self.screen, colour, rect, 0)
                     pygame.draw.rect(self.screen, (0, 0, 0), rect, 1)
+                    rect.x += 30
 
                     self.screen.blit(self.flag_image, rect)
                     pygame.display.flip()
+
+
 
 
                 else:

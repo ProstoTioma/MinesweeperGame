@@ -1,15 +1,19 @@
-import pygame
 import random
+
 import numpy as np
 
 
 class Game:
     def __init__(self):
-        # 0 closed square w/o mine, 1 opened square w/o mine, -1 mine opened, -2 mine closed, 2 flag
+        # -3 closed square w/o mine, -4 opened square w/o mine, -1 mine opened, -2 mine closed, -5 flag
         self.game_over = False
-        self.field = np.zeros([6, 6])
-        self.generate_mines(10)
-        self.flags_number = 10
+        self.field = np.zeros((6, 6), dtype=Cell)
+        for i in range(len(self.field)):
+            for j in range(len(self.field[0])):
+                cell = Cell(0)
+                self.field[j][i] = cell
+        self.generate_mines(6)
+        self.flags_number = 7
         self.neighbors_count = 0
 
     def generate_mines(self, n):
@@ -17,28 +21,28 @@ class Game:
             line = random.randint(0, len(self.field) - 1)
             el_ind = random.randint(0, len(self.field) - 1)
 
-            self.field[el_ind][line] = -2
+            self.field[el_ind][line].number = -2
 
     def click(self, button, square_index):
-        self.neighbors_count = 0
-        if button == 1:
-            if self.field[square_index] == -2:
-                self.field[square_index] = -1
-                self.game_over = True
-                print("Game Over!")
-            elif self.field[square_index] == 0:
-                self.field[square_index] = 1
-                neighbours = self.get_neighbors(self.field, square_index[0], square_index[1])
-                print(neighbours)
-                for neighbour in neighbours:
-                    if neighbour == -2:
-                        self.neighbors_count += 1
-                print(self.neighbors_count)
+        if not self.game_over:
+            self.neighbors_count = 0
+            if button == 1:
+                if self.field[square_index].number == -2:
+                    self.field[square_index].number = -1
+                    self.game_over = True
+                    print("Game Over!")
+                elif self.field[square_index].number == -3:
+                    self.field[square_index].number = -4
+                    neighbours = self.get_neighbors(self.field, square_index[0], square_index[1])
+                    for neighbour in neighbours:
+                        if neighbour.number == -2:
+                            self.neighbors_count += 1
+                    self.field[square_index].neighbours_count = self.neighbors_count
 
-        elif button == 3:
-            if self.flags_number > 0:
-                self.field[square_index] = 2
-                self.flags_number -= 1
+            elif button == 3:
+                if self.flags_number > 0 and self.field[square_index].number != -5:
+                    self.field[square_index].number = -5
+                    self.flags_number -= 1
 
     def get_neighbors(self, matrix, x, y):
         num_rows, num_cols = len(matrix), len(matrix[0])
@@ -50,3 +54,9 @@ class Game:
                     neighbours.append(matrix[i][j])
 
         return neighbours
+
+
+class Cell:
+    def __init__(self, neighbours_count):
+        self.number = -3
+        self.neighbours_count = neighbours_count
