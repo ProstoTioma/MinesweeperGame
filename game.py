@@ -40,8 +40,8 @@ class Game:
                     self.field[square_index].neighbours_count = self.neighbors_count
 
             elif button == 3:
-                if self.flags_number > 0 and self.field[square_index].number != -5:
-                    self.field[square_index].number = -5
+                if self.flags_number > 0 and not self.field[square_index].is_flag:
+                    self.field[square_index].is_flag = True
                     self.flags_number -= 1
 
     def get_neighbors(self, matrix, x, y):
@@ -60,3 +60,6 @@ class Cell:
     def __init__(self, neighbours_count):
         self.number = -3
         self.neighbours_count = neighbours_count
+        self.is_flag = False
+
+       #index box number 0,1,2,3,4

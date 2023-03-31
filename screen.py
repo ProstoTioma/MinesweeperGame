@@ -69,15 +69,6 @@ class Screen:
                         pygame.display.update()
 
 
-                elif square.number == -5:
-                    colour = (162, 209, 73)
-                    pygame.draw.rect(self.screen, colour, rect, 0)
-                    pygame.draw.rect(self.screen, (0, 0, 0), rect, 1)
-                    rect.x += 30
-
-                    self.screen.blit(self.flag_image, rect)
-                    pygame.display.flip()
-
 
 
 
@@ -86,5 +77,15 @@ class Screen:
                     pygame.draw.rect(self.screen, colour, rect, 0)
                     pygame.draw.rect(self.screen, (0, 0, 0), rect, 1)
 
+                if square.is_flag:
+                    colour = (162, 209, 73)
+                    pygame.draw.rect(self.screen, colour, rect, 0)
+                    pygame.draw.rect(self.screen, (0, 0, 0), rect, 1)
+                    rect.x += 30
+
+                    self.screen.blit(self.flag_image, rect)
+                    pygame.display.flip()
+
                 countSquare += 1
             countRaw += 1
+
