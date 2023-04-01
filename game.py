@@ -27,20 +27,24 @@ class Game:
         if not self.game_over:
             self.neighbors_count = 0
             if button == 1:
-                if self.field[square_index].number == -2:
-                    self.field[square_index].number = -1
-                    self.game_over = True
-                    print("Game Over!")
-                elif self.field[square_index].number == -3:
-                    self.field[square_index].number = -4
-                    neighbours = self.get_neighbors(self.field, square_index[0], square_index[1])
-                    for neighbour in neighbours:
-                        if neighbour.number == -2:
-                            self.neighbors_count += 1
-                    self.field[square_index].neighbours_count = self.neighbors_count
+                if not self.field[square_index].is_flag:
+                    if self.field[square_index].number == -2:
+                        self.field[square_index].number = -1
+                        self.game_over = True
+                        print("Game Over!")
+                    elif self.field[square_index].number == -3:
+                        self.field[square_index].number = -4
+                        neighbours = self.get_neighbors(self.field, square_index[0], square_index[1])
+                        for neighbour in neighbours:
+                            if neighbour.number == -2:
+                                self.neighbors_count += 1
+                        self.field[square_index].neighbours_count = self.neighbors_count
 
             elif button == 3:
-                if self.flags_number > 0 and not self.field[square_index].is_flag:
+                if self.field[square_index].is_flag:
+                    self.field[square_index].is_flag = False
+                    self.flags_number += 1
+                elif self.flags_number > 0 and not self.field[square_index].is_flag and (self.field[square_index].number == -3 or self.field[square_index].number == -2):
                     self.field[square_index].is_flag = True
                     self.flags_number -= 1
 
@@ -61,5 +65,6 @@ class Cell:
         self.number = -3
         self.neighbours_count = neighbours_count
         self.is_flag = False
+
 
        #index box number 0,1,2,3,4
