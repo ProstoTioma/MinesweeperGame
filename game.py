@@ -71,16 +71,8 @@ class Game:
 
     def open_safe_squares(self, neighbours, neighbours_indexes):
         for i in range(len(neighbours)):
-            neighbour = self.field[neighbours_indexes[i]]
             self.click(1, neighbours_indexes[i])
-            if not neighbour.is_flag:
-                neighbour.number = -4
-                neighbours_2, _ = self.get_neighbors(self.field, neighbours_indexes[i][0], neighbours_indexes[i][1])
-                for neighbour_2 in neighbours_2:
-                    if neighbour_2.number == -2:
-                        self.neighbors_count += 1
-                neighbour.neighbors_count = self.neighbors_count
-                self.neighbors_count = 0
+
 
 
 class Cell:
