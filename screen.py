@@ -25,6 +25,7 @@ class Screen:
             self.sprites = []
             self.draw_field(self.game.field)
 
+
             for event in pygame.event.get():
                 self.draw_field(self.game.field)
                 # Click
@@ -68,10 +69,6 @@ class Screen:
                         self.screen.blit(text, rect)
                         pygame.display.update()
 
-
-
-
-
                 else:
                     colour = (162, 209, 73)
                     pygame.draw.rect(self.screen, colour, rect, 0)
@@ -88,4 +85,3 @@ class Screen:
 
                 countSquare += 1
             countRaw += 1
-

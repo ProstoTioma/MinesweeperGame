@@ -16,6 +16,8 @@ class Game:
         self.flags_number = 7
         self.neighbors_count = 0
 
+
+
     def generate_mines(self, n):
         for i in range(n):
             line = random.randint(0, len(self.field) - 1)
@@ -24,40 +26,61 @@ class Game:
             self.field[el_ind][line].number = -2
 
     def click(self, button, square_index):
+        square = self.field[square_index]
         if not self.game_over:
             self.neighbors_count = 0
             if button == 1:
-                if not self.field[square_index].is_flag:
-                    if self.field[square_index].number == -2:
-                        self.field[square_index].number = -1
+                if not square.is_flag:
+                    if square.number == -2:
+                        square.number = -1
                         self.game_over = True
                         print("Game Over!")
-                    elif self.field[square_index].number == -3:
-                        self.field[square_index].number = -4
-                        neighbours = self.get_neighbors(self.field, square_index[0], square_index[1])
+                    elif square.number == -3:
+                        square.number = -4
+                        neighbours, neighbours_indexes = self.get_neighbors(self.field, square_index[0],
+                                                                            square_index[1])
                         for neighbour in neighbours:
                             if neighbour.number == -2:
                                 self.neighbors_count += 1
-                        self.field[square_index].neighbours_count = self.neighbors_count
+                        square.neighbours_count = self.neighbors_count
+
+                        if square.neighbours_count == 0:
+                            self.open_safe_squares(neighbours, neighbours_indexes)
 
             elif button == 3:
-                if self.field[square_index].is_flag:
-                    self.field[square_index].is_flag = False
+                if square.is_flag:
+                    square.is_flag = False
                     self.flags_number += 1
-                elif self.flags_number > 0 and not self.field[square_index].is_flag and (self.field[square_index].number == -3 or self.field[square_index].number == -2):
-                    self.field[square_index].is_flag = True
+                elif self.flags_number > 0 and not square.is_flag and (
+                        square.number == -3 or square.number == -2):
+                    square.is_flag = True
                     self.flags_number -= 1
 
     def get_neighbors(self, matrix, x, y):
         num_rows, num_cols = len(matrix), len(matrix[0])
         neighbours = []
+        neighbours_indexes = []
 
         for i in range((0 if x - 1 < 0 else x - 1), (num_rows if x + 2 > num_rows else x + 2), 1):
             for j in range((0 if y - 1 < 0 else y - 1), (num_cols if y + 2 > num_cols else y + 2), 1):
                 if matrix[x][y] != matrix[i][j]:
                     neighbours.append(matrix[i][j])
+                    neighbours_indexes.append((i, j))
 
-        return neighbours
+        return neighbours, neighbours_indexes
+
+    def open_safe_squares(self, neighbours, neighbours_indexes):
+        for i in range(len(neighbours)):
+            neighbour = self.field[neighbours_indexes[i]]
+            self.click(1, neighbours_indexes[i])
+            if not neighbour.is_flag:
+                neighbour.number = -4
+                neighbours_2, _ = self.get_neighbors(self.field, neighbours_indexes[i][0], neighbours_indexes[i][1])
+                for neighbour_2 in neighbours_2:
+                    if neighbour_2.number == -2:
+                        self.neighbors_count += 1
+                neighbour.neighbors_count = self.neighbors_count
+                self.neighbors_count = 0
 
 
 class Cell:
@@ -66,5 +89,4 @@ class Cell:
         self.neighbours_count = neighbours_count
         self.is_flag = False
 
-
-       #index box number 0,1,2,3,4
+    # index box number 0,1,2,3,4
