@@ -6,6 +6,16 @@ import numpy as np
 class Game:
     def __init__(self):
         # -3 closed square w/o mine, -4 opened square w/o mine, -1 mine opened, -2 mine closed, -5 flag
+        self.start()
+
+    def generate_mines(self, n):
+        for i in range(n):
+            line = random.randint(0, len(self.field) - 1)
+            el_ind = random.randint(0, len(self.field) - 1)
+
+            self.field[el_ind][line].number = -2
+
+    def start(self):
         self.game_over = False
         self.field = np.zeros((6, 6), dtype=Cell)
         for i in range(len(self.field)):
@@ -15,13 +25,6 @@ class Game:
         self.generate_mines(6)
         self.flags_number = 7
         self.neighbors_count = 0
-
-    def generate_mines(self, n):
-        for i in range(n):
-            line = random.randint(0, len(self.field) - 1)
-            el_ind = random.randint(0, len(self.field) - 1)
-
-            self.field[el_ind][line].number = -2
 
     def click(self, button, square_index):
         square = self.field[square_index]

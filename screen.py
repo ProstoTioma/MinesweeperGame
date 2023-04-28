@@ -18,6 +18,8 @@ class Screen:
             r"sprites/flag_icon.png")
         self.flag_rect = self.flag_image.get_rect()
 
+
+
     def draw(self):
         self.screen.fill(self.bg)
         while True:
@@ -42,15 +44,7 @@ class Screen:
 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_r:
-                        self.game.field = np.zeros((6, 6), dtype=Cell)
-                        for i in range(len(self.game.field)):
-                            for j in range(len(self.game.field[0])):
-                                cell = Cell(0)
-                                self.game.field[j][i] = cell
-                        self.game.generate_mines(6)
-                        self.game.flags_number = 7
-                        self.game.neighbors_count = 0
-                        self.game.game_over = False
+                        self.game.start()
 
                 pygame.display.update()
 
