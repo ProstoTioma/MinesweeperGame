@@ -1,5 +1,7 @@
+import numpy as np
 import pygame
 
+from game import Cell
 from game import Game
 
 
@@ -17,14 +19,10 @@ class Screen:
         self.flag_rect = self.flag_image.get_rect()
 
     def draw(self):
-        end = False
         self.screen.fill(self.bg)
-
-        while not end:
-
+        while True:
             self.sprites = []
             self.draw_field(self.game.field)
-
 
             for event in pygame.event.get():
                 self.draw_field(self.game.field)
@@ -32,19 +30,32 @@ class Screen:
                 if event.type == pygame.MOUSEBUTTONUP:
                     pos = pygame.mouse.get_pos()
                     clicked_sprites = [s for s in self.sprites if s.collidepoint(pos)]
-                    print(clicked_sprites[0][0] // clicked_sprites[0][2],
-                          clicked_sprites[0][1] // clicked_sprites[0][3])
+                    # print(clicked_sprites[0][0] // clicked_sprites[0][2],
+                    #      clicked_sprites[0][1] // clicked_sprites[0][3])
 
                     self.game.click(event.button, (clicked_sprites[0][1] // clicked_sprites[0][3],
                                                    clicked_sprites[0][0] // clicked_sprites[0][2]))
 
                 if event.type == pygame.QUIT:
-                    end = True
-            pygame.display.update()
+                    pygame.quit()
+                    break
+
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_r:
+                        self.game.field = np.zeros((6, 6), dtype=Cell)
+                        for i in range(len(self.game.field)):
+                            for j in range(len(self.game.field[0])):
+                                cell = Cell(0)
+                                self.game.field[j][i] = cell
+                        self.game.generate_mines(6)
+                        self.game.flags_number = 7
+                        self.game.neighbors_count = 0
+                        self.game.game_over = False
+
+                pygame.display.update()
 
     def draw_field(self, field):
         countRaw = 0
-
         for raw in field:
             countSquare = 0
             for square in raw:

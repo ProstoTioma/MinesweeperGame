@@ -16,8 +16,6 @@ class Game:
         self.flags_number = 7
         self.neighbors_count = 0
 
-
-
     def generate_mines(self, n):
         for i in range(n):
             line = random.randint(0, len(self.field) - 1)
@@ -72,7 +70,6 @@ class Game:
     def open_safe_squares(self, neighbours, neighbours_indexes):
         for i in range(len(neighbours)):
             self.click(1, neighbours_indexes[i])
-
 
 
 class Cell:
