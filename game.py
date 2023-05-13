@@ -8,6 +8,8 @@ class Game:
         # -3 closed square w/o mine, -4 opened square w/o mine, -1 mine opened, -2 mine closed, -5 flag
         self.start()
 
+        # self.score()
+
     def generate_mines(self, n):
         for i in range(n):
             line = random.randint(0, len(self.field) - 1)
@@ -15,7 +17,9 @@ class Game:
 
             self.field[el_ind][line].number = -2
 
+
     def start(self):
+        print("The Game has begun")
         self.game_over = False
         self.field = np.zeros((6, 6), dtype=Cell)
         for i in range(len(self.field)):
@@ -25,6 +29,11 @@ class Game:
         self.generate_mines(6)
         self.flags_number = 7
         self.neighbors_count = 0
+
+        for a in self.field:
+            for i in a:
+                print(a)
+
 
     def click(self, button, square_index):
         square = self.field[square_index]
@@ -48,6 +57,8 @@ class Game:
                         if square.neighbours_count == 0:
                             self.open_safe_squares(neighbours, neighbours_indexes)
 
+
+
             elif button == 3:
                 if square.is_flag:
                     square.is_flag = False
@@ -56,6 +67,7 @@ class Game:
                         square.number == -3 or square.number == -2):
                     square.is_flag = True
                     self.flags_number -= 1
+                self.score()
 
     def get_neighbors(self, matrix, x, y):
         num_rows, num_cols = len(matrix), len(matrix[0])
@@ -73,6 +85,10 @@ class Game:
     def open_safe_squares(self, neighbours, neighbours_indexes):
         for i in range(len(neighbours)):
             self.click(1, neighbours_indexes[i])
+
+    def score(self):
+        print("You have", self.flags_number, "flags")
+
 
 
 class Cell:
