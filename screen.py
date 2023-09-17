@@ -1,7 +1,5 @@
-import numpy as np
 import pygame
 
-from game import Cell
 from game import Game
 
 
@@ -14,11 +12,8 @@ class Screen:
         self.bg = (98, 150, 186)
         self.game = Game()
         self.sprites = []
-        self.flag_image = pygame.image.load(
-            r"sprites/flag_icon.png")
+        self.flag_image = pygame.image.load(r"sprites/flag_icon.png")
         self.flag_rect = self.flag_image.get_rect()
-
-
 
     def draw(self):
         self.screen.fill(self.bg)
@@ -35,7 +30,6 @@ class Screen:
                     # print(clicked_sprites[0][0] // clicked_sprites[0][2],
                     #      clicked_sprites[0][1] // clicked_sprites[0][3])
                     if clicked_sprites:
-
                         self.game.click(event.button, (clicked_sprites[0][1] // clicked_sprites[0][3],
                                                        clicked_sprites[0][0] // clicked_sprites[0][2]))
 
